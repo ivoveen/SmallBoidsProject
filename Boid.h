@@ -7,10 +7,10 @@ public:
 	void Draw();
 	void DebugDraw();
 	//settings:
-	float BOIDLENGTH = 10;
-	float LOCALRADIUS = 70;
-	float MAXFORCE = 0.2f;
-	float MAXVEL = 3.0;
+	float BOIDLENGTH = 10.0f;
+	float LOCALRADIUS = 50.0f;
+	float MAXFORCE = 0.5f;
+	float MAXVEL = 3.0f;
 
 	uint mColor = 0xffffff;
 

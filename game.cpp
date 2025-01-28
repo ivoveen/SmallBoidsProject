@@ -18,8 +18,7 @@ void Game::Init()
 	tm* tm_local = localtime(&time_ptr);
 	InitSeed(static_cast<uint>(tm_local->tm_sec * tm_local->tm_min * tm_local->tm_hour * tm_local->tm_wday * tm_local->tm_year));
 
-
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 100; i++) {
 		boids.push_back(new Boid(screen, &boids));
 	}
 }
@@ -35,10 +34,15 @@ void Game::Tick( float  deltaTime  )
 	Boid* mBoid = boids.at(currentBoid);
 	mBoid->mColor = 0xff0000;
 	ImGui::Begin("Boid Settings");
-	ImGui::SliderFloat("Boid Length", &mBoid->BOIDLENGTH, 0, 100);
-	ImGui::SliderFloat("Local Radius", &mBoid->LOCALRADIUS, 0, 100);
-	ImGui::SliderFloat("Max Force", &mBoid->MAXFORCE, 0, 2);
-	ImGui::SliderInt("Boid", &currentBoid, 0, boids.size() - 1);
+	ImGui::SliderFloat("Boid Length", &mBoid->BOIDLENGTH, 0.0f, 100.0f);
+	ImGui::SliderFloat("Local Radius", &mBoid->LOCALRADIUS, 0.0f, 100.0f);
+	ImGui::SliderFloat("Max Force", &mBoid->MAXFORCE, 0.1f, 2.0f);
+	int oldBoid = currentBoid;
+	if (ImGui::SliderInt("Boid", &currentBoid, 0, static_cast<int>(boids.size()) - 1)) {
+		boids.at(oldBoid)->mColor = 0xffffff;
+		mBoid = boids.at(currentBoid);
+		mBoid->mColor = 0xff0000;
+	};
 
 	ImGui::Text("Boid %d", currentBoid);
 	ImGui::Text("Position: (%f, %f)", mBoid->mPosition.x, mBoid->mPosition.y);

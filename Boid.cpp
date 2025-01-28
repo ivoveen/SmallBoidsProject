@@ -71,9 +71,9 @@ void Boid::Align()
 		//nothing to allign to
 		return;
 	}
-	averageDiff /= count;
-	averageVel /= count; //average velocity
-	averagePos /= count; //average position
+	averageDiff /= static_cast<float>(count);
+	averageVel /= static_cast<float>(count); //average velocity
+	averagePos /= static_cast<float>(count); //average position
 
 	//steer towards the average velocity
 	float2 Avel = averageVel - this->mVelocity;
@@ -101,13 +101,15 @@ void Boid::Align()
 	if(allignment == true) mAcceleration += Avel;
 	if(cohesion == true) mAcceleration += Apos;
 	if(seperation == true) mAcceleration += averageDiff;
+
+	assert(!isnan(mAcceleration.x) || !isnan(mAcceleration.y)); // Error: acceleration was NaN.
 }
 
 void Boid::Draw() {
 
 	float2 velDirection = normalize(mVelocity);
-	mpScreen->Box(mPosition.x -2, mPosition.y -2 , mPosition.x + 2, mPosition.y + 2, mColor);
-	mpScreen->Line(mPosition.x, mPosition.y, mPosition.x + (velDirection.x * BOIDLENGTH), mPosition.y + (velDirection.y * BOIDLENGTH), mColor);
+	mpScreen->Box(static_cast<int>(mPosition.x) -2, static_cast<int>(mPosition.y) -2 , static_cast<int>(mPosition.x) + 2, static_cast<int>(mPosition.y) + 2, mColor);
+	mpScreen->Line(static_cast<int>(mPosition.x), static_cast<int>(mPosition.y), static_cast<int>(mPosition.x + (velDirection.x * BOIDLENGTH)), static_cast<int>(mPosition.y + (velDirection.y * BOIDLENGTH)), mColor);
 }
 
 void Boid::DebugDraw() {
